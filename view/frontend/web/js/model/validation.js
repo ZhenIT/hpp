@@ -91,7 +91,7 @@ define(
             isValidName: function (firstname, lastname) {
                 let pattern = /^[ÀÁÂÃÂÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷ø¤ùúûüýþÿ~L~N~Z~\~^~_¥a-zA-Z0-9.'";\s,\+\-£\/@!\?%\(\)\*:$#\[\]|=\\&amp;\u0152\u0153\u017D\u0161\u017E\u0178\u20AC]*$/;
 
-                return (pattern.test(firstname) && pattern.test(lastname) && (firstname.length + lastname.length)<=31);
+                return (pattern.test(firstname) && pattern.test(lastname));
             },
 
             /**
@@ -105,7 +105,7 @@ define(
 
                 var isValid = true;
                 street.forEach(function (item) {
-                    if (!pattern.test(item) || item.length>40) {
+                    if (!pattern.test(item)) {
                         isValid = false;
                     }
                 });
@@ -122,7 +122,7 @@ define(
             isValidCity: function (city) {
                 let pattern = /^[ÀÁÂÃÂÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ_a-zA-Z0-9.'\s,\-\/\u0152\u0153\u017D\u0161\u017E\u0178]*$/;
 
-                return pattern.test(city) && city.length<=40;
+                return pattern.test(city);
             },
 
             /**

@@ -555,8 +555,8 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
 
         if ($this->_helper->isApmEnabled()) {
             $additionalHppData["HPP_CUSTOMER_COUNTRY"]   = $billingCountryCode;
-            $additionalHppData["HPP_CUSTOMER_FIRSTNAME"] = $billingFirstName;
-            $additionalHppData["HPP_CUSTOMER_LASTNAME"]  = $billingLastName;
+            $additionalHppData["HPP_CUSTOMER_FIRSTNAME"] = substr($billingFirstName, 0, 30);
+            $additionalHppData["HPP_CUSTOMER_LASTNAME"]  = substr($billingLastName, 0, 30);
             $additionalHppData["HPP_TX_STATUS_URL"]      = $this->_helper->getMerchantBaseResponseUrl() . '/realexpayments_hpp/apm/result';
         }
 
@@ -1112,10 +1112,10 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
             $phone = $shipping->getTelephone();
             $name = $shipping->getFirstname() . $lastName;
             $street = $shipping->getStreet();
-            $formFields['HPP_NAME'] = isset($name) ? $name : self::NOT_AVAILABLE;
-            $formFields['HPP_STREET'] = isset($street[0]) ? $street[0] : self::NOT_AVAILABLE;
-            $formFields['HPP_STREET2'] = isset($street[1]) ? $street[1] : self::NOT_AVAILABLE;
-            $formFields['HPP_CITY'] = isset($city) ? $city : self::NOT_AVAILABLE;
+            $formFields['HPP_NAME'] = isset($name) ? substr($name, 0, 31) : self::NOT_AVAILABLE;
+            $formFields['HPP_STREET'] = isset($street[0]) ? substr($street[0], 0, 50) : self::NOT_AVAILABLE;
+            $formFields['HPP_STREET2'] = isset($street[1]) ? substr($street[1], 0, 50) : self::NOT_AVAILABLE;
+            $formFields['HPP_CITY'] = isset($city) ? substr($city, 0, 40) : self::NOT_AVAILABLE;
             $formFields['HPP_STATE'] = isset($state) ? $state : self::NOT_AVAILABLE;
             $formFields['HPP_ZIP'] = isset($postalCode) ? $postalCode : self::NOT_AVAILABLE;
             $formFields['HPP_COUNTRY'] = isset($country) ? $country : self::NOT_AVAILABLE;
