@@ -511,10 +511,10 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
         }
 
         $hppBillingFields = [
-            "HPP_BILLING_STREET1" => $billingAddress->getStreetLine(1),
-            "HPP_BILLING_STREET2" => $billingAddress->getStreetLine(2),
-            "HPP_BILLING_STREET3" => $billingAddress->getStreetLine(3),
-            "HPP_BILLING_CITY" => $billingAddress->getCity(),
+            "HPP_BILLING_STREET1" => substr($billingAddress->getStreetLine(1), 0, 50),
+            "HPP_BILLING_STREET2" => substr($billingAddress->getStreetLine(2), 0, 50),
+            "HPP_BILLING_STREET3" => substr($billingAddress->getStreetLine(3), 0, 50),
+            "HPP_BILLING_CITY" => substr($billingAddress->getCity(), 0, 40),
             "HPP_BILLING_STATE" => in_array(
                 $billingAddress->getCountryId(),
                 ['US', 'CA']
@@ -528,10 +528,10 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
         $shippingAddress = $order->getShippingAddress();
 
         $hppShippingFields = [
-            "HPP_SHIPPING_STREET1" => !$isOrderVirtual && $shippingAddress ? $shippingAddress->getStreetLine(1) : '',
-            "HPP_SHIPPING_STREET2" => !$isOrderVirtual && $shippingAddress ? $shippingAddress->getStreetLine(2) : '',
-            "HPP_SHIPPING_STREET3" => !$isOrderVirtual && $shippingAddress ? $shippingAddress->getStreetLine(3) : '',
-            "HPP_SHIPPING_CITY" => !$isOrderVirtual && $shippingAddress ? $shippingAddress->getCity() : '',
+            "HPP_SHIPPING_STREET1" => !$isOrderVirtual && $shippingAddress ? substr($shippingAddress->getStreetLine(1), 0, 50) : '',
+            "HPP_SHIPPING_STREET2" => !$isOrderVirtual && $shippingAddress ? substr($shippingAddress->getStreetLine(2), 0, 50) : '',
+            "HPP_SHIPPING_STREET3" => !$isOrderVirtual && $shippingAddress ? substr($shippingAddress->getStreetLine(3), 0, 50) : '',
+            "HPP_SHIPPING_CITY" => !$isOrderVirtual && $shippingAddress ? substr($shippingAddress->getCity(), 0, 40) : '',
             "HPP_SHIPPING_STATE" => !$isOrderVirtual && $shippingAddress ? (in_array(
                 $shippingAddress->getCountryId(),
                 ['US', 'CA']
@@ -572,7 +572,7 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
 
         $this->_helper->logDebug(
             'Gateway Request:' .
-            print_r($this->_helper->stripFields($formFields), true)
+                print_r($this->_helper->stripFields($formFields), true)
         );
 
         $formFields['SHA1HASH'] = $sha1hash;
@@ -1331,7 +1331,7 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
             throw new \Magento\Framework\Exception\LocalizedException(
                 __(
                     'The capture action failed. Gateway Response - Error ' . $fields['RESULT'] . ': ' .
-                    $fields['MESSAGE']
+                        $fields['MESSAGE']
                 )
             );
         }
@@ -1376,7 +1376,7 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
             throw new \Magento\Framework\Exception\LocalizedException(
                 __(
                     'The refund action failed. Gateway Response - Error ' . $fields['RESULT'] . ': ' .
-                    $fields['MESSAGE']
+                        $fields['MESSAGE']
                 )
             );
         }
@@ -1431,7 +1431,7 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
             throw new \Magento\Framework\Exception\LocalizedException(
                 __(
                     'The void action failed. Gateway Response - Error ' . $fields['RESULT'] . ': ' .
-                    $fields['MESSAGE']
+                        $fields['MESSAGE']
                 )
             );
         }
@@ -1463,7 +1463,7 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
             throw new \Magento\Framework\Exception\LocalizedException(
                 __(
                     'The accept payment action failed. Gateway Response - Error ' . $fields['RESULT'] .
-                    ': ' . $fields['MESSAGE']
+                        ': ' . $fields['MESSAGE']
                 )
             );
         }
@@ -1486,7 +1486,7 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
             throw new \Magento\Framework\Exception\LocalizedException(
                 __(
                     'The hold action failed. Gateway Response - Error ' . $fields['RESULT'] . ': ' .
-                    $fields['MESSAGE']
+                        $fields['MESSAGE']
                 )
             );
         }
@@ -1520,7 +1520,7 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
             throw new \Magento\Framework\Exception\LocalizedException(
                 __(
                     'The reconcile action failed. Gateway Response - Error ' . $fields['RESULT'] . ': ' .
-                    $fields['MESSAGE']
+                        $fields['MESSAGE']
                 )
             );
         }

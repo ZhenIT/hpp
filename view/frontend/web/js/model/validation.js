@@ -101,7 +101,7 @@ define(
              * @return {Boolean}
              */
             isValidStreet: function (street) {
-                let pattern = /^[ÀÁÂÃÂÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ_a-zA-Z0-9.'\s,\-\/\u0152\u0153\u017D\u0161\u017E\u0178]*$/;
+                let pattern = /^[ÀÁÂÃÂÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ_a-zA-Z0-9.'\s,\-\/\u0152\u0153\u017D\u0161\u017E\u0178\u00BA\u00AA]*$/;
 
                 var isValid = true;
                 street.forEach(function (item) {
