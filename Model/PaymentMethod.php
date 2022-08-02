@@ -379,7 +379,7 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
                     $postalBit = substr($postalBit, 0, 5);
                 }
             }
-            $billingPostalCode = $postalBit . '|' . $addresBit;
+            $billingPostalCode = substr($postalBit . '|' . $addresBit, 0, 56);
             /** @var \Magento\Sales\Model\Order $order */
             $billingFirstName = $order->getBillingAddress()->getFirstName();
             $billingLastName  = $order->getBillingAddress()->getLastname();
@@ -407,7 +407,7 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
                     $postalBit = substr($postalBit, 0, 5);
                 }
             }
-            $shippingPostalCode = $postalBit . '|' . $addresBit;
+            $shippingPostalCode = substr($postalBit . '|' . $addresBit, 0, 56);
         } else {
             $shippingCountryCode = '';
             $shippingPostalCode = '';
