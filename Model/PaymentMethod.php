@@ -511,10 +511,10 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
         }
 
         $hppBillingFields = [
-            "HPP_BILLING_STREET1" => substr($billingAddress->getStreetLine(1), 0, 50),
-            "HPP_BILLING_STREET2" => substr($billingAddress->getStreetLine(2), 0, 50),
-            "HPP_BILLING_STREET3" => substr($billingAddress->getStreetLine(3), 0, 50),
-            "HPP_BILLING_CITY" => substr($billingAddress->getCity(), 0, 40),
+            "HPP_BILLING_STREET1" => $this->getPrintableString($billingAddress->getStreetLine(1), 50),
+            "HPP_BILLING_STREET2" => $this->getPrintableString($billingAddress->getStreetLine(2), 50),
+            "HPP_BILLING_STREET3" => $this->getPrintableString($billingAddress->getStreetLine(3), 50),
+            "HPP_BILLING_CITY" => $this->getPrintableString($billingAddress->getCity(), 40),
             "HPP_BILLING_STATE" => in_array(
                 $billingAddress->getCountryId(),
                 ['US', 'CA']
@@ -528,10 +528,10 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
         $shippingAddress = $order->getShippingAddress();
 
         $hppShippingFields = [
-            "HPP_SHIPPING_STREET1" => !$isOrderVirtual && $shippingAddress ? substr($shippingAddress->getStreetLine(1), 0, 50) : '',
-            "HPP_SHIPPING_STREET2" => !$isOrderVirtual && $shippingAddress ? substr($shippingAddress->getStreetLine(2), 0, 50) : '',
-            "HPP_SHIPPING_STREET3" => !$isOrderVirtual && $shippingAddress ? substr($shippingAddress->getStreetLine(3), 0, 50) : '',
-            "HPP_SHIPPING_CITY" => !$isOrderVirtual && $shippingAddress ? substr($shippingAddress->getCity(), 0, 40) : '',
+            "HPP_SHIPPING_STREET1" => !$isOrderVirtual && $shippingAddress ? $this->getPrintableString($shippingAddress->getStreetLine(1), 50) : '',
+            "HPP_SHIPPING_STREET2" => !$isOrderVirtual && $shippingAddress ? $this->getPrintableString($shippingAddress->getStreetLine(2), 50) : '',
+            "HPP_SHIPPING_STREET3" => !$isOrderVirtual && $shippingAddress ? $this->getPrintableString($shippingAddress->getStreetLine(3), 50) : '',
+            "HPP_SHIPPING_CITY" => !$isOrderVirtual && $shippingAddress ? $this->getPrintableString($shippingAddress->getCity(), 40) : '',
             "HPP_SHIPPING_STATE" => !$isOrderVirtual && $shippingAddress ? (in_array(
                 $shippingAddress->getCountryId(),
                 ['US', 'CA']
@@ -580,6 +580,20 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
         ksort($formFields, SORT_STRING);
 
         return $formFields;
+    }
+    /**
+     * @param $str String to clean
+     * @param $maxLength Maximum length of the string
+     * 
+     * @return string
+     */
+    private function getPrintableString(string $str, int $maxLength = 50): string
+    {
+        $str = trim($str);
+        $str = preg_replace('/[[:^print:]]/', '', $str);
+        $str = substr($str, 0, $maxLength);
+
+        return $str;
     }
 
     private function getCountryPhoneCodes()
