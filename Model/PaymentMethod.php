@@ -367,7 +367,7 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
             if (isset($street[0]) && $billingCountryCode == "GB") {
                 $addresBit = preg_replace('/\D/', '', $street[0]);
                 if (strlen($addresBit) > 5) {
-                    $addresBit = substr($addresBit, 0, 5);
+                    $addresBit = $this->getPrintableString($addresBit, 5);
                 }
             } else {
                 $addresBit = $street[0];
@@ -376,10 +376,10 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
             if ($billingCountryCode == "GB") {
                 $postalBit = preg_replace('/\D/', '', $postalBit);
                 if (strlen($postalBit) > 5) {
-                    $postalBit = substr($postalBit, 0, 5);
+                    $postalBit = $this->getPrintableString($postalBit, 5);
                 }
             }
-            $billingPostalCode = substr($postalBit . '|' . $addresBit, 0, 56);
+            $billingPostalCode = $this->getPrintableString($postalBit . '|' . $addresBit, 56);
             /** @var \Magento\Sales\Model\Order $order */
             $billingFirstName = $order->getBillingAddress()->getFirstName();
             $billingLastName  = $order->getBillingAddress()->getLastname();
@@ -395,7 +395,7 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
             if (isset($street[0]) && $shippingCountryCode == "GB") {
                 $addresBit = preg_replace('/\D/', '', $street[0]);
                 if (strlen($addresBit) > 5) {
-                    $addresBit = substr($addresBit, 0, 5);
+                    $addresBit = $this->getPrintableString($addresBit, 5);
                 }
             } else {
                 $addresBit = $street[0];
@@ -404,10 +404,10 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
             if ($shippingCountryCode == "GB") {
                 $postalBit = preg_replace('/\D/', '', $postalBit);
                 if (strlen($postalBit) > 5) {
-                    $postalBit = substr($postalBit, 0, 5);
+                    $postalBit = $this->getPrintableString($postalBit, 5);
                 }
             }
-            $shippingPostalCode = substr($postalBit . '|' . $addresBit, 0, 56);
+            $shippingPostalCode = $this->getPrintableString($postalBit . '|' . $addresBit, 56);
         } else {
             $shippingCountryCode = '';
             $shippingPostalCode = '';
@@ -555,8 +555,8 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
 
         if ($this->_helper->isApmEnabled()) {
             $additionalHppData["HPP_CUSTOMER_COUNTRY"]   = $billingCountryCode;
-            $additionalHppData["HPP_CUSTOMER_FIRSTNAME"] = substr($billingFirstName, 0, 30);
-            $additionalHppData["HPP_CUSTOMER_LASTNAME"]  = substr($billingLastName, 0, 30);
+            $additionalHppData["HPP_CUSTOMER_FIRSTNAME"] = $this->getPrintableString($billingFirstName, 30);
+            $additionalHppData["HPP_CUSTOMER_LASTNAME"]  = $this->getPrintableString($billingLastName, 30);
             $additionalHppData["HPP_TX_STATUS_URL"]      = $this->_helper->getMerchantBaseResponseUrl() . '/realexpayments_hpp/apm/result';
         }
 
@@ -1126,10 +1126,10 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod impleme
             $phone = $shipping->getTelephone();
             $name = $shipping->getFirstname() . $lastName;
             $street = $shipping->getStreet();
-            $formFields['HPP_NAME'] = isset($name) ? substr($name, 0, 31) : self::NOT_AVAILABLE;
-            $formFields['HPP_STREET'] = isset($street[0]) ? substr($street[0], 0, 50) : self::NOT_AVAILABLE;
-            $formFields['HPP_STREET2'] = isset($street[1]) ? substr($street[1], 0, 50) : self::NOT_AVAILABLE;
-            $formFields['HPP_CITY'] = isset($city) ? substr($city, 0, 40) : self::NOT_AVAILABLE;
+            $formFields['HPP_NAME'] = isset($name) ? $this->getPrintableString($name, 31) : self::NOT_AVAILABLE;
+            $formFields['HPP_STREET'] = isset($street[0]) ? $this->getPrintableString($street[0], 50) : self::NOT_AVAILABLE;
+            $formFields['HPP_STREET2'] = isset($street[1]) ? $this->getPrintableString($street[1], 50) : self::NOT_AVAILABLE;
+            $formFields['HPP_CITY'] = isset($city) ? $this->getPrintableString($city, 40) : self::NOT_AVAILABLE;
             $formFields['HPP_STATE'] = isset($state) ? $state : self::NOT_AVAILABLE;
             $formFields['HPP_ZIP'] = isset($postalCode) ? $postalCode : self::NOT_AVAILABLE;
             $formFields['HPP_COUNTRY'] = isset($country) ? $country : self::NOT_AVAILABLE;
